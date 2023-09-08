@@ -9,18 +9,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    setCentralWidget(game);
-    game->start_game();
+//    setCentralWidget(game);
+//    game->start_game();
 
-    connect(game, &Game::go_to_main_menu, [this]{
-//        setCentralWidget(main_menu);
+    ui->widget_2->setVisible(false);
+
+    connect(ui->widget_2, &Game::go_to_main_menu, [this]{
+
+        ui->widget->setVisible(true);
+        ui->widget_2->setVisible(false);
+
+//        ui->widget_2->stop_game();
+//        game->start_game();
     });
 
-    connect(main_menu, &Main_menu::start_new_game, [this]{
+    connect(ui->widget, &Main_menu::start_new_game, [this]{
 
-        setCentralWidget(game);
+        ui->widget->setVisible(false);
+        ui->widget_2->setVisible(true);
 
-        game->start_game();
+        ui->widget_2->start_game();
     });
 
 }

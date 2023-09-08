@@ -3,16 +3,35 @@
 #include <QMessageBox>
 #include <cstdlib>
 #include <math.h>
+#include <unistd.h>
 #include "common.h"
 
 Graphics_scene::Graphics_scene(QObject *parent) : QGraphicsScene(parent)
 {
+
+    text = new QGraphicsTextItem;
+    text->setPos(sceneRect().width()/2, sceneRect().height()/2);
+    addItem(text);
 
     addRect(QRectF(0,0,weight_,height_), QPen(Qt::gray));
 
     connect(timer, &QTimer::timeout, this, &Graphics_scene::slot_timer);
 
     connect(timer_eat, &QTimer::timeout, this, &Graphics_scene::slot_timer_eat);
+
+    connect(timer_srart_game, &QTimer::timeout, [this]{
+
+        if (text->toPlainText() == "3"){
+            text->setPlainText("2");
+        }else if (text->toPlainText() == "2"){
+            text->setPlainText("1");
+        }else{
+            removeItem(text);
+            timer_srart_game->stop();
+        }
+
+
+    });
 
     snake1->setPos(300, 250);
     snake1->set_player(Player::PLAYER_ONE);
@@ -45,7 +64,13 @@ void Graphics_scene::keyPressEvent(QKeyEvent *keyEvent)
 
 void Graphics_scene::start_stop_game(bool value)
 {
+
+
     if (value){
+
+        text->setPlainText("3");
+        timer_srart_game->start(1000);
+
         timer->start(200);
 
         time_rand = std::rand() % 4;
@@ -165,7 +190,7 @@ void Graphics_scene::slot_timer_eat()
     auto y = std::round((rand() % (height_ - 25)) / 25) * 25;
     eat->setPos(x, y);
 
-    array_eat.push_back(eat);
+//    array_eat.push_back(eat);
     addItem(eat);
 
     time_rand = std::rand() % 4;

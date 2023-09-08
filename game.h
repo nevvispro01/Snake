@@ -18,6 +18,8 @@ public:
 
     void start_game();
 
+    void stop_game();
+
 signals:
 
     void go_to_main_menu();

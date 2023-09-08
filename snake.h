@@ -42,7 +42,7 @@ private:
     std::vector<Body *> array_body;
     std::vector<std::pair<QPointF, Move>> array_moving;
 
-    Move current_move{Move::DOWN};
+    std::vector<Move> current_move{Move::DOWN};
     Move move{Move::DOWN};
 
     Player player{Player::NONE};

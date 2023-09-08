@@ -30,12 +30,12 @@ void Snake::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 {
     switch (player) {
     case Player::PLAYER_ONE:
-        painter->fillRect(boundingRect(), QBrush(Qt::blue));
+        painter->fillRect(boundingRect(), QBrush(Qt::darkBlue));
         painter->setPen(Qt::blue);
         painter->drawRect(boundingRect());
         break;
     case Player::PLAYER_TWO:
-        painter->fillRect(boundingRect(), QBrush(Qt::red));
+        painter->fillRect(boundingRect(), QBrush(Qt::darkRed));
         painter->setPen(Qt::red);
         painter->drawRect(boundingRect());
         break;
@@ -56,51 +56,56 @@ QRectF Snake::boundingRect() const
 
 void Snake::PressKey(QKeyEvent *event)
 {
-    switch (player) {
-    case Player::PLAYER_ONE:{
-        if (event->key() == Qt::Key_W and move != Move::DOWN){
-            current_move = Move::UP;
-        }else if (event->key() == Qt::Key_S and move != Move::UP){
-            current_move = Move::DOWN;
-        }else if (event->key() == Qt::Key_A and move != Move::RIGHT){
-            current_move = Move::LEFT;
-        }else if (event->key() == Qt::Key_D and move != Move::LEFT){
-            current_move = Move::RIGHT;
+    if (current_move.size() < 2){
+        switch (player) {
+        case Player::PLAYER_ONE:{
+            if (event->key() == Qt::Key_W and current_move.front() != Move::DOWN and current_move.front() != Move::UP){
+                current_move.push_back(Move::UP);
+            }else if (event->key() == Qt::Key_S and current_move.front() != Move::UP and current_move.front() != Move::DOWN){
+                current_move.push_back(Move::DOWN);
+            }else if (event->key() == Qt::Key_A and current_move.front() != Move::RIGHT and current_move.front() != Move::LEFT){
+                current_move.push_back(Move::LEFT);
+            }else if (event->key() == Qt::Key_D and current_move.front() != Move::LEFT and current_move.front() != Move::RIGHT){
+                current_move.push_back(Move::RIGHT);
+            }
+            break;
         }
-        break;
-    }
-    case Player::PLAYER_TWO:{
-        if (event->key() == Qt::Key_Up and move != Move::DOWN){
-            current_move = Move::UP;
-        }else if (event->key() == Qt::Key_Down and move != Move::UP){
-            current_move = Move::DOWN;
-        }else if (event->key() == Qt::Key_Left and move != Move::RIGHT){
-            current_move = Move::LEFT;
-        }else if (event->key() == Qt::Key_Right and move != Move::LEFT){
-            current_move = Move::RIGHT;
+        case Player::PLAYER_TWO:{
+            if (event->key() == Qt::Key_Up and current_move.front() != Move::DOWN and current_move.front() != Move::UP){
+                current_move.push_back(Move::UP);
+            }else if (event->key() == Qt::Key_Down and current_move.front() != Move::UP and current_move.front() != Move::DOWN){
+                current_move.push_back(Move::DOWN);
+            }else if (event->key() == Qt::Key_Left and current_move.front() != Move::RIGHT and current_move.front() != Move::LEFT){
+                current_move.push_back(Move::LEFT);
+            }else if (event->key() == Qt::Key_Right and current_move.front() != Move::LEFT and current_move.front() != Move::RIGHT){
+                current_move.push_back(Move::RIGHT);
+            }
+            break;
         }
-        break;
-    }
-    case Player::PLAYER_THREE:{
-        if (event->key() == Qt::Key_I and move != Move::DOWN){
-            current_move = Move::UP;
-        }else if (event->key() == Qt::Key_K and move != Move::UP){
-            current_move = Move::DOWN;
-        }else if (event->key() == Qt::Key_J and move != Move::RIGHT){
-            current_move = Move::LEFT;
-        }else if (event->key() == Qt::Key_L and move != Move::LEFT){
-            current_move = Move::RIGHT;
+        case Player::PLAYER_THREE:{
+            if (event->key() == Qt::Key_I and current_move.front() != Move::DOWN and current_move.front() != Move::UP){
+                current_move.push_back(Move::UP);
+            }else if (event->key() == Qt::Key_K and current_move.front() != Move::UP and current_move.front() != Move::DOWN){
+                current_move.push_back(Move::DOWN);
+            }else if (event->key() == Qt::Key_J and current_move.front() != Move::RIGHT and current_move.front() != Move::LEFT){
+                current_move.push_back(Move::LEFT);
+            }else if (event->key() == Qt::Key_L and current_move.front() != Move::LEFT and current_move.front() != Move::RIGHT){
+                current_move.push_back(Move::RIGHT);
+            }
+            break;
         }
-        break;
-    }
 
+        }
     }
 
 }
 
 void Snake::Moving()
 {
-    move = current_move;
+    if (current_move.size() != 0){
+        move = current_move.front();
+        current_move.erase(current_move.begin());
+    }
     switch (move) {
     case Move::UP:
         moveBy(0, -25);

@@ -35,6 +35,9 @@ private:
     QTimer * timer{new QTimer};
     QTimer * timer_eat{new QTimer};
 
+    QTimer * timer_srart_game{new QTimer};
+    QGraphicsTextItem *text;
+
     int time_rand;
 
     Snake *snake1{new Snake};

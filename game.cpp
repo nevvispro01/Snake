@@ -10,11 +10,23 @@ Game::Game(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+}
+
+Game::~Game()
+{
+    delete ui;
+}
+
+void Game::start_game()
+{
+    ui->num_score->setText("0");
+    ui->num_score_2->setText("0");
+    ui->num_score_3->setText("0");
+
     auto scene = new Graphics_scene();
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setSceneRect(0,0,weight_, height_);
-
-    scene->start_stop_game(false);
 
     connect(scene, &Graphics_scene::add_score, this, &Game::add_score);
 //    connect(scene, &Graphics_scene::add_score_second, [this]{
@@ -37,15 +49,7 @@ Game::Game(QWidget *parent) :
             scene->start_stop_game(true);
         }
     });
-}
 
-Game::~Game()
-{
-    delete ui;
-}
-
-void Game::start_game()
-{
     static_cast<Graphics_scene *>(ui->graphicsView->scene())->start_stop_game(true);
 }
 
