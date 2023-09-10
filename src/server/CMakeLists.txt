@@ -1,4 +1,4 @@
-minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.5)
 project(snake_server
     VERSION 0.1 
     LANGUAGES CXX)
